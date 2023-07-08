@@ -1,0 +1,17 @@
+{% extends "base/core.html" %}
+
+{% block content %}
+<h1>For You</h1>
+
+<div>
+    <a>Feed</a>
+    <div>
+        {% for tweet in tweets %}
+            <h5>{{ tweet.topic }}</h5>
+            <p>{{ tweet.content }}</p>
+            <p>{{ tweet.created }}</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
