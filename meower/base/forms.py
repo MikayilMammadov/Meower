@@ -1,7 +1,7 @@
-from django.forms import ModelForm
+from django import forms
 from .models import Tweet
 
-class TweetForm(ModelForm):
-     class Meta:
+class TweetForm(forms.ModelForm):
+    class Meta:
         model = Tweet
-        fields = '__all__'
+        fields = ['topic', 'content']

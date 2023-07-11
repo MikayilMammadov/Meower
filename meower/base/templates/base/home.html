@@ -1,6 +1,13 @@
 {% extends "base/core.html" %}
 
 {% block content %}
+    {% if request.user.is_authenticated %}
+        <p>{{request.user.username}}</p>
+        <a href="{% url 'logout' %}">Logout</a>
+    {% else %}
+        <a href="{% url 'login' %}">Login</a>
+    {% endif %}
+<hr>
 <h1>For You</h1>
 
 <div>
@@ -8,7 +15,7 @@
     <a>Feed</a>
     <div>
         {% for tweet in tweets %}
-            <h5>{{ tweet.topic }}</h5>
+            <h5>{{tweet.creator.username}} - {{ tweet.topic }}</h5>
             <p>{{ tweet.content }}</p>
             <p>{{ tweet.created }}</p>
         {% endfor %}
