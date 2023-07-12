@@ -8,5 +8,6 @@ urlpatterns = [
     path('login/', views.login_page, name="login"),
     path("logout/", views.logoutUser, name="logout"),
     path("register/", views.registerUser, name="register"),
+    path('tweet/<int:tweet_id>/comment/', views.create_comment, name='create_comment'),
 
 ]

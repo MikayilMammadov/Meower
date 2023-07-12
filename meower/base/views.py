@@ -5,8 +5,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
-from .models import Tweet
-from .forms import TweetForm
+from .models import Tweet, Comment
+from .forms import TweetForm, CommentForm
 
 # Create your views here.
 
@@ -56,18 +56,21 @@ def registerUser(request):
 
 def home(request):
     tweets = Tweet.objects.all()
-    context = {"tweets":tweets}
+    #test
+    comments = Comment.objects.all
+    context = {"tweets":tweets, "comments":comments}
     return render(request, "base/home.html", context)
 
 def tweet(request, pk):
     tweet = None
+    tweets = Tweet.objects.all()
     for i in tweets:
         if i['id']==int(pk):
             tweet = i
     context={"tweet":tweet}
     return HttpResponse("Tweet")
 
-@login_required
+@login_required(login_url="/login")
 def create_tweet(request):
     form = TweetForm()
     if request.method == "POST":
@@ -79,3 +82,18 @@ def create_tweet(request):
             return redirect('home')
     context = {"form": form}
     return render(request, 'base/create_tweet.html', context)
+
+@login_required(login_url="/login")
+def create_comment(request, tweet_id):
+    tweet = Tweet.objects.get(pk=tweet_id)
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.creator = request.user  # Set the creator as the logged-in user
+            comment.tweet = tweet
+            comment.save()
+    else:
+        form = CommentForm()
+
+    return redirect('home')

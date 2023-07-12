@@ -18,6 +18,22 @@
             <h5>{{tweet.creator.username}} - {{ tweet.topic }}</h5>
             <p>{{ tweet.content }}</p>
             <p>{{ tweet.created }}</p>
+            <a>Comments</a>
+                {% for comment in tweet.comments.all %}
+                    <a>{{comment.creator.username}}</a>
+                    <p>{{comment.content }}</p>
+                {% endfor %}
+            <form method="post" action="{% url 'create_comment' tweet.id %}">
+                {% csrf_token %}
+                <input type="text" name="content">
+                <button type="submit">Add Comment</button>
+            </form>
+            <hr>
+        {% endfor %}
+
+        {% for comment in comments %}
+            <h5>{{ comment.tweet.topic }}
+            <p>{{ comment.content }}</p>
         {% endfor %}
     </div>
 </div>

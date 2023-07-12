@@ -13,5 +13,20 @@ class Tweet(models.Model):
     class Meta:
         ordering = ["-created"]
 
+
+class Comment(models.Model):
+    creator = models.ForeignKey(User, on_delete=models.CASCADE)
+    tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE, related_name="comments")
+    content = models.TextField()
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.content[0:50]
+
+
+
+
+    
     
 
