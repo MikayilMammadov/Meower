@@ -16,9 +16,13 @@
     <div>
         {% for tweet in tweets %}
             <h5>{{tweet.creator.username}} - {{ tweet.topic }}</h5>
+            {% if request.user == tweet.creator %}
+                <a href="{% url 'update_tweet' tweet.id %}">Edit</a>
+            {% endif %}
             <p>{{ tweet.content }}</p>
             <p>{{ tweet.created }}</p>
             <a>Comments</a>
+            <hr>
                 {% for comment in tweet.comments.all %}
                     <a>{{comment.creator.username}}</a>
                     <p>{{comment.content }}</p>

@@ -84,6 +84,23 @@ def create_tweet(request):
     return render(request, 'base/create_tweet.html', context)
 
 @login_required(login_url="/login")
+def update_tweet (request, pk):
+    tweet = Tweet.objects.get(pk=pk)
+    form = TweetForm(instance=tweet)
+
+    if request.user != tweet.creator:
+        return HttpResponse("You are not allowed here")
+    
+    if request.method == 'POST':
+        form = TweetForm(request.POST, instance=tweet)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+        
+    context = {"form":form}
+    return render(request, 'base/create_tweet.html', context)
+
+@login_required(login_url="/login")
 def create_comment(request, tweet_id):
     tweet = Tweet.objects.get(pk=tweet_id)
     if request.method == "POST":
