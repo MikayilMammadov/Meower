@@ -101,8 +101,21 @@ def update_tweet (request, pk):
     return render(request, 'base/create_tweet.html', context)
 
 @login_required(login_url="/login")
-def create_comment(request, tweet_id):
-    tweet = Tweet.objects.get(pk=tweet_id)
+def delete_tweet(request, pk):
+    tweet = Tweet.objects.get(pk=pk)
+
+    if request.user != tweet.creator:
+        return HttpResponse("You are not allowed here")
+
+    if request.method == "POST":
+        tweet.delete()
+        return redirect("home")
+    
+    return redirect("home")
+
+@login_required(login_url="/login")
+def create_comment(request, pk):
+    tweet = Tweet.objects.get(pk=pk)
     if request.method == "POST":
         form = CommentForm(request.POST)
         if form.is_valid():

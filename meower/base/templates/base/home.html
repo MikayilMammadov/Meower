@@ -18,6 +18,10 @@
             <h5>{{tweet.creator.username}} - {{ tweet.topic }}</h5>
             {% if request.user == tweet.creator %}
                 <a href="{% url 'update_tweet' tweet.id %}">Edit</a>
+                <form method="POST" action ="{% url 'delete_tweet' tweet.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Delete</button>
+                </form>
             {% endif %}
             <p>{{ tweet.content }}</p>
             <p>{{ tweet.created }}</p>
