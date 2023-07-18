@@ -114,6 +114,18 @@ def delete_tweet(request, pk):
     return redirect("home")
 
 @login_required(login_url="/login")
+def like_tweet(request, pk):
+    tweet = Tweet.objects.get(pk=pk)
+    user = request.user
+    if request.method == "POST":
+        if user in tweet.likes.all():
+            tweet.likes.remove(user)
+        else:
+            tweet.likes.add(user)
+    return redirect("home")
+       
+
+@login_required(login_url="/login")
 def create_comment(request, pk):
     tweet = Tweet.objects.get(pk=pk)
     if request.method == "POST":

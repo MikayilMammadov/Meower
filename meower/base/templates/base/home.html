@@ -25,6 +25,10 @@
             {% endif %}
             <p>{{ tweet.content }}</p>
             <p>{{ tweet.created }}</p>
+            <form method="post" action="{% url 'like_tweet' tweet.id %}">
+                {% csrf_token %}
+                <button type="submit">Like</button>
+            </form>
             <a>Comments</a>
             <hr>
                 {% for comment in tweet.comments.all %}
