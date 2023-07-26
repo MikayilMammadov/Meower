@@ -1,12 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponse
-from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
-from .models import Tweet, Comment
-from .forms import TweetForm, CommentForm
+from .models import Tweet, Comment, User
+from .forms import TweetForm, CommentForm, UserForm
 
 # Create your views here.
 
@@ -38,10 +36,10 @@ def logoutUser(request):
 
 def registerUser(request):
     page = "register"
-    form = UserCreationForm()
+    form = UserForm()
     context = {"page":page, "form":form}
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
+        form = UserForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
             user.username = user.username.lower()

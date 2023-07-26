@@ -1,8 +1,12 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db import models
 
 class User(AbstractUser):
-    pass
+    email = models.EmailField(unique=True, null=True)
+    bio = models.TextField(null=True)
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = []
 
 class Tweet(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
