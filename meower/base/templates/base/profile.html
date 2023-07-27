@@ -3,5 +3,36 @@
 {% block content %}
 {% if request.user.is_authenticated %}
         <h1>{{request.user.username}}</h1>
-        <p></p>
-{% endblock content %}
+        <p>{{request.user.bio}}</p>
+        <div>
+            {% for tweet in tweets %}
+            <h5>{{tweet.creator.username}} - {{ tweet.topic }}</h5>
+            {% if request.user == tweet.creator %}
+                <a href="{% url 'update_tweet' tweet.id %}">Edit</a>
+                <form method="POST" action ="{% url 'delete_tweet' tweet.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Delete</button>
+                </form>
+            {% endif %}
+            <p>{{ tweet.content }}</p>
+            <p>{{ tweet.created }}</p>
+            <form method="post" action="{% url 'like_tweet' tweet.id %}">
+                {% csrf_token %}
+                <button type="submit">Like</button>
+            </form>
+            <a>Comments</a>
+            <hr>
+                {% for comment in tweet.comments.all %}
+                    <a>{{comment.creator.username}}</a>
+                    <p>{{comment.content }}</p>
+                {% endfor %}
+            <form method="post" action="{% url 'create_comment' tweet.id %}">
+                {% csrf_token %}
+                <input type="text" name="content">
+                <button type="submit">Add Comment</button>
+            </form>
+            <hr>
+        {% endfor %}
+        </div>
+{% endif %}
+{% endblock  %}

@@ -11,7 +11,7 @@ class User(AbstractUser):
 class Tweet(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     topic = models.CharField(max_length=100)
-    content = models.CharField(max_length=280, null=True, blank=True)
+    content = models.TextField(max_length=280, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, related_name="tweet_likes", default=None, blank=True)
 

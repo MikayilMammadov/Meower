@@ -59,6 +59,11 @@ def home(request):
     context = {"tweets":tweets, "comments":comments}
     return render(request, "base/home.html", context)
 
+def profile(request):
+    user = request.user
+    tweets = Tweet.objects.filter(creator=user)
+    return render(request, 'base/profile.html', {'tweets': tweets})
+
 def tweet(request, pk):
     tweet = None
     tweets = Tweet.objects.all()
